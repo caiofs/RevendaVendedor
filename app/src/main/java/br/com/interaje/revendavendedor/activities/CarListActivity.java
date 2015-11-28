@@ -29,9 +29,11 @@ public class CarListActivity extends AppCompatActivity {
         car_list = (ListView) findViewById(R.id.car_list);
         dbHelper = new DatabaseHelper(this);
 
-        //listAdapter = new CarListAdapter(this,List<Car>);
         List<Car> listCars = retornaCar();
-        Toast.makeText(CarListActivity.this, listCars.get(0).getName(), Toast.LENGTH_SHORT).show();
+        listAdapter = new CarListAdapter(this,listCars);
+        car_list.setAdapter(listAdapter);
+
+        //Toast.makeText(CarListActivity.this, listCars.get(0).getName(), Toast.LENGTH_SHORT).show();
     }
 
     public List<Car> retornaCar(){
@@ -48,6 +50,7 @@ public class CarListActivity extends AppCompatActivity {
             car.setPrice(cursor.getDouble(cursor.getColumnIndex("price")));
 
             cars.add(car);
+            cursor.moveToNext();
         }
         return cars;
 
