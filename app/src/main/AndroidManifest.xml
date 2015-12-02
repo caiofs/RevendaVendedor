@@ -19,6 +19,13 @@
         </activity>
         <activity android:name=".activities.CarListActivity" >
         </activity>
+        <activity android:name=".activities.CarInfoActivity" >
+        </activity>
+        <activity
+            android:name=".activities.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

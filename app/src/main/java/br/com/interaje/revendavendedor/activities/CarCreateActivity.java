@@ -1,6 +1,5 @@
 package br.com.interaje.revendavendedor.activities;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,13 +39,24 @@ public class CarCreateActivity extends AppCompatActivity {
         bt_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               insertCar();
+               long result = insertCar();
+
+               if(result != -1){
+                   Toast.makeText(CarCreateActivity.this, "Carro " + result +" cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                   Intent intent = new Intent(CarCreateActivity.this, CarInfoActivity.class);
+                   intent.putExtra("carro_id", result);
+                   startActivity(intent);
+                   finish();
+
+               }else{
+                   Toast.makeText(CarCreateActivity.this, "Erro ao inserir carro", Toast.LENGTH_SHORT).show();
+               }
             }
         });
 
     }
 
-    public void insertCar(){
+    public long insertCar(){
         Log.i("DB", "Instancia db");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Log.i("DB", "Db instanciado");
@@ -57,16 +67,19 @@ public class CarCreateActivity extends AppCompatActivity {
         values.put("year", car_year.getText().toString());
 
         long result = db.insert("car", null, values);
-
+        //Retorna o último ID inserido no DB
+        return (int) result;
+        /*
         if(result != -1){
-            Toast.makeText(CarCreateActivity.this, "Carro cadastrado com sucesso", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(CarCreateActivity.this, MainActivity.class));
+            //Toast.makeText(CarCreateActivity.this, "Carro " + result +" cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+            //startActivity(new Intent(CarCreateActivity.this, MainActivity.class));
 
         }else{
             Toast.makeText(CarCreateActivity.this, "Erro ao inserir carr", Toast.LENGTH_SHORT).show();
         }
 
         //Toast.makeText(CarCreateActivity.this, "Cadastra o carro", Toast.LENGTH_SHORT).show();
+        */
     }
 
 

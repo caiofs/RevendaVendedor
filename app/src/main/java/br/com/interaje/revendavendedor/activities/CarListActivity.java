@@ -1,9 +1,12 @@
 package br.com.interaje.revendavendedor.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,22 +21,41 @@ import br.com.interaje.revendavendedor.model.Car;
 
 public class CarListActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
-    private ListView car_list;
-    private CarListAdapter listAdapter;
+    private ListView lv_car_list;
+    private static CarListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_list);
 
-        car_list = (ListView) findViewById(R.id.car_list);
+        lv_car_list = (ListView) findViewById(R.id.car_list);
         dbHelper = new DatabaseHelper(this);
 
-        List<Car> listCars = retornaCar();
+        final List<Car> listCars = retornaCar();
         listAdapter = new CarListAdapter(this,listCars);
-        car_list.setAdapter(listAdapter);
+        lv_car_list.setAdapter(listAdapter);
 
-        //Toast.makeText(CarListActivity.this, listCars.get(0).getName(), Toast.LENGTH_SHORT).show();
+        lv_car_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CarListActivity.this, CarInfoActivity.class);
+                intent.putExtra("carro_id", listAdapter.getItemId(position) );
+                startActivity(intent);
+                /*
+                Toast.makeText(CarListActivity.this,
+                        "Position: " + Integer.toString(position) +
+                        "Id: " + Long.toString(id),
+                        Toast.LENGTH_SHORT).show();
+                */
+                //String item_id = (String) Long.toString();
+                //String get_count = (String) Integer.toString(listAdapter.getCount());
+                //String get_id = Long.toString(listAdapter.getItemId(position));
+
+                //Toast.makeText(CarListActivity.this, get_id , Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     public List<Car> retornaCar(){
@@ -45,6 +67,7 @@ public class CarListActivity extends AppCompatActivity {
 
         for(int i=0; i < cursor.getCount(); i++){
             Car car = new Car();
+            car.setId(cursor.getLong(cursor.getColumnIndex("_id")));
             car.setName(cursor.getString(cursor.getColumnIndex("name")));
             car.setYear(cursor.getInt(cursor.getColumnIndex("year")));
             car.setPrice(cursor.getDouble(cursor.getColumnIndex("price")));

@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this,"Listar Carros", Toast.LENGTH_SHORT).show();
                     break;
                     case 2:
-                        Toast.makeText(MainActivity.this,"Pedidos", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, Main2Activity.class));
+                        //Toast.makeText(MainActivity.this,"Pedidos", Toast.LENGTH_SHORT).show();
                     break;
                 }
             }

@@ -38,9 +38,13 @@ public class CarListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 1l;
+        return carList.get(position).getId();
     }
 
+    public void updatedList(List<Car> newCarList){
+        carList = newCarList;
+        this.notifyDataSetChanged();
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rview = layoutInflater.inflate(R.layout.car_list_item_layout, parent, false);
